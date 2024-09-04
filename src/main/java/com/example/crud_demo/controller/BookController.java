@@ -44,14 +44,30 @@ public class BookController {
 
         // Inject ValueError if title is "Error"
         if ("Error".equalsIgnoreCase(book.getTitle())) {
-            logger.error("Simulated ValueError: Book title cannot be 'Error'");
-            throw new IllegalArgumentException("Simulated ValueError: Book title cannot be 'Error'");
+            logger.error("Simulated IllegalArgumentException: Book title cannot be 'Error'");
+            throw new IllegalArgumentException("Simulated IllegalArgumentException");
         }
 
-        // Simulate form validation error if title is "Invalid"
-        if ("Invalid".equalsIgnoreCase(book.getTitle())) {
-            logger.warn("Simulated validation error: Title 'Invalid' is not allowed");
-            throw new IllegalArgumentException("Simulated validation error: Invalid book title");
+        // Simulate form validation error if title is "Null"
+        if ("Null".equalsIgnoreCase(book.getTitle())) {
+            logger.error("Simulated NullPointerException: Book title cannot be null");
+            throw new NullPointerException("Simulated NullPointerException");
+        }
+
+        if ("ServerError".equalsIgnoreCase(book.getTitle())) {
+            logger.error("Simulated 500 Internal Server Error");
+            throw new RuntimeException("Simulated 500 Internal Server Error");
+        }
+
+        if ("OOM".equalsIgnoreCase(book.getTitle())) {
+            logger.error("Simulated OutOfMemoryError");
+            try {
+                // Create a large array of objects to exhaust heap space
+                int[] largeArray = new int[Integer.MAX_VALUE];
+            } catch (OutOfMemoryError e) {
+                logger.error("OutOfMemoryError caught: {}", e.getMessage());
+                throw e;  // You can choose to rethrow or handle this error
+            }
         }
 
         // Create the book in the database
