@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,31 +43,37 @@ public class BookController {
     public String createBook(@ModelAttribute("book") Book book) {
         logger.debug("Creating book with title: {}", book.getTitle());
 
-        // Inject ValueError if title is "Error"
+        // Inject IllegalArgumentException if title is "Error"
         if ("Error".equalsIgnoreCase(book.getTitle())) {
-            logger.error("Simulated IllegalArgumentException: Book title cannot be 'Error'");
-            throw new IllegalArgumentException("Simulated IllegalArgumentException");
+            logger.error("Simulated IllegalArgumentException: Invalid title '{}'", book.getTitle());
+            throw new IllegalArgumentException("Simulated IllegalArgumentException: Title cannot be 'Error'");
         }
 
         // Simulate form validation error if title is "Null"
         if ("Null".equalsIgnoreCase(book.getTitle())) {
             logger.error("Simulated NullPointerException: Book title cannot be null");
-            throw new NullPointerException("Simulated NullPointerException");
+            throw new NullPointerException("Simulated NullPointerException: Title is null");
         }
 
+        // Simulate a 500 Internal Server Error if title is "ServerError"
         if ("ServerError".equalsIgnoreCase(book.getTitle())) {
-            logger.error("Simulated 500 Internal Server Error");
+            logger.error("Simulated 500 Internal Server Error for book with title '{}'", book.getTitle());
             throw new RuntimeException("Simulated 500 Internal Server Error");
         }
 
+        // Simulate OutOfMemoryError if title is "OOM"
         if ("OOM".equalsIgnoreCase(book.getTitle())) {
-            logger.error("Simulated OutOfMemoryError");
+            logger.error("Simulated OutOfMemoryError: Forcing heap exhaustion for book with title '{}'", book.getTitle());
             try {
-                // Create a large array of objects to exhaust heap space
+                // Create a large list of objects to exhaust heap space
+//                List<Object> memoryHog = new ArrayList<>();
+//                while (true) {
+//                    memoryHog.add(new Object()); // Fill heap space gradually
+//                }
                 int[] largeArray = new int[Integer.MAX_VALUE];
             } catch (OutOfMemoryError e) {
                 logger.error("OutOfMemoryError caught: {}", e.getMessage());
-                throw e;  // You can choose to rethrow or handle this error
+                throw e;  // Optionally rethrow or handle the error
             }
         }
 
