@@ -30,8 +30,8 @@ You can simulate various errors by using specific book titles during creation. T
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/spring-boot-crud-demo.git
-   cd spring-boot-crud-demo
+   git clone https://github.com/MarcusCJH/SampleSpringBootCRUD.git
+   cd SampleSpringBootCRUD
 2. Update the database connection properties in application.properties (if you're using MySQL)
 3. Run the application using Maven:
     ```bash
