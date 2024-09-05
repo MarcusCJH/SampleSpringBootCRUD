@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/books")
+@RequestMapping("/")
 public class BookController {
 
     private static final Logger logger = LoggerFactory.getLogger(BookController.class);
@@ -80,7 +80,7 @@ public class BookController {
         // Create the book in the database
         bookService.createBook(book);
         logger.debug("Book created successfully: {}", book.getTitle());
-        return "redirect:/books";
+        return "redirect:/";
     }
 
     // Edit book form
@@ -103,7 +103,7 @@ public class BookController {
         logger.debug("Updating book with ID {} and title {}", id, book.getTitle());
         bookService.updateBook(id, book);
         logger.debug("Book updated successfully");
-        return "redirect:/books";
+        return "redirect:/";
     }
 
     // Delete book
@@ -112,6 +112,6 @@ public class BookController {
         logger.debug("Deleting book with ID {}", id);
         bookService.deleteBook(id);
         logger.debug("Book deleted successfully");
-        return "redirect:/books";
+        return "redirect:/";
     }
 }

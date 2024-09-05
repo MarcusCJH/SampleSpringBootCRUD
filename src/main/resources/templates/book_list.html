@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <title>Book List</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Include the head section -->
+<head th:replace="fragments/head :: head(title='Book List')"></head>
 <body>
 <h1>Book List</h1>
-<a href="/cpu-crash">Simulate Crash CPU</a>
-<a href="/memory-crash">Simulate Crash RAM</a>
-<a href="/books/new">Create New Book</a>
+<a href="/cpu-crash">Simulate Crash CPU</a><br>
+<a href="/memory-crash">Simulate Crash RAM</a><br>
+<a href="/new">Create New Book</a><br>
 <table>
     <thead>
     <tr>
@@ -23,8 +22,8 @@
         <td th:text="${book.author}"></td>
         <td th:text="${book.publishedDate}"></td>
         <td>
-            <a th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a>
-            <a th:href="@{/books/{id}/delete(id=${book.id})}">Delete</a>
+            <a th:href="@{/{id}/edit(id=${book.id})}">Edit</a>
+            <a th:href="@{/{id}/delete(id=${book.id})}">Delete</a>
         </td>
     </tr>
     </tbody>

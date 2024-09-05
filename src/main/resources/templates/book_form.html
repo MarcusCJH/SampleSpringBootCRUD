@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Book Form</title>
-</head>
+<!-- Include the head section -->
+<head th:replace="fragments/head :: head(title='Book Form')"></head>
 <body>
 <h1 th:text="${book.id != null ? 'Edit Book' : 'Create New Book'}"></h1>
-<form th:action="@{/books}" th:object="${book}" method="post">
+<form th:action="@{/}" th:object="${book}" method="post">
     <input type="hidden" th:field="*{id}">
     <div>
         <label>Title:</label>
@@ -23,6 +22,6 @@
         <button type="submit">Save</button>
     </div>
 </form>
-<a href="/books">Back to Book List</a>
+<a href="/">Back to Book List</a>
 </body>
 </html>
