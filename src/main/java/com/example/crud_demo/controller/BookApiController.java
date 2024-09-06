@@ -1,5 +1,6 @@
 package com.example.crud_demo.controller;
 
+import com.amazonaws.xray.spring.aop.XRayEnabled;
 import com.example.crud_demo.model.Book;
 import com.example.crud_demo.service.BookService;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@XRayEnabled
 @RequestMapping("/api/books")
 public class BookApiController {
 

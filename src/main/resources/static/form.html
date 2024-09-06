@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Page</title>
+</head>
+<body>
+<h1>Fill out the form</h1>
+<form id="userForm" onsubmit="submitForm(event)">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
+        'cwr',
+        '10b40b72-f750-4f1b-8900-1e2005ae7b26',
+        '1.0.0',
+        'us-east-1',
+        'https://client.rum.us-east-1.amazonaws.com/1.18.0/cwr.js',
+        {
+            sessionSampleRate: 1,
+            identityPoolId: "us-east-1:037dc4f6-056f-47b4-a9be-1dbeb882c144",
+            endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
+            telemetries: ["performance","errors","http"],
+            allowCookies: true,
+            enableXRay: true
+        }
+    );
+    function submitForm(event) {
+        event.preventDefault(); // Prevent the form from submitting in the traditional way
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+
+        // Redirect to confirmation.html, passing the data as query parameters
+        window.location.href = `confirmation.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
+    }
+</script>
+</body>
+</html>

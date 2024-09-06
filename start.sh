@@ -6,7 +6,9 @@ wget $CLOUDWATCH_AGENT_DOWNLOAD_URL
 sudo rpm -U ./amazon-cloudwatch-agent.rpm
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:cloudwatch-agent.json
 
-
+rm -rf SampleSpringBootCRUD
+git clone https://github.com/MarcusCJH/SampleSpringBootCRUD.git
+cd SampleSpringBootCRUD
 mvn compile
 mvn package
 

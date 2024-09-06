@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaos - Error Simulation</title>
+    <style>
+        button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .error-log {
+            color: red;
+        }
+    </style>
+    <script>
+
+        (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
+        'cwr',
+        '10b40b72-f750-4f1b-8900-1e2005ae7b26',
+        '1.0.0',
+        'us-east-1',
+        'https://client.rum.us-east-1.amazonaws.com/1.18.0/cwr.js',
+        {
+            sessionSampleRate: 1,
+            identityPoolId: "us-east-1:037dc4f6-056f-47b4-a9be-1dbeb882c144",
+            endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
+            telemetries: ["performance","errors","http"],
+            allowCookies: true,
+            enableXRay: true
+        }
+        );
+
+        // Global error handler to catch uncaught errors
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error(`Error: ${message} at ${source}:${lineno}:${colno}`);
+            const errorLog = document.getElementById('error-log');
+            errorLog.innerHTML += `<p class="error-log">Caught error: ${message} (Line: ${lineno}, Col: ${colno})</p>`;
+
+            // Optionally, redirect to a custom error page
+            // window.location.href = "/error.html";  // Uncomment to redirect to a different error page
+            return true;  // Prevent default browser error handling
+        };
+
+        // Trigger a ReferenceError (undefined variable)
+        function triggerReferenceError() {
+            alert(nonExistentVariable);
+        }
+
+        // Trigger a TypeError (invalid method call)
+        function triggerTypeError() {
+            null.f();  // Cannot call a method on `null`
+        }
+
+        // Trigger a SyntaxError (intentional bad syntax)
+        function triggerSyntaxError() {
+            eval('var a = );');  // Incorrect syntax
+        }
+
+        // Trigger an out of memory error (intentionally)
+        function triggerOutOfMemoryError() {
+            let memoryHog = [];
+            while (true) {
+                memoryHog.push(new Array(1000000).fill(0));  // Continuously allocate large arrays
+            }
+        }
+
+        // Trigger an infinite loop (high CPU usage simulation)
+        function triggerInfiniteLoop() {
+            while (true) {
+                console.log('This will keep logging forever until the browser hangs...');
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Chaos - JavaScript Error Simulation</h1>
+<p>Click the buttons below to simulate different types of JavaScript errors.</p>
+
+<!-- Buttons to trigger different errors -->
+<button onclick="triggerReferenceError()">Trigger ReferenceError</button>
+<button onclick="triggerTypeError()">Trigger TypeError</button>
+<button onclick="triggerSyntaxError()">Trigger SyntaxError</button>
+<button onclick="triggerOutOfMemoryError()">Trigger Out of Memory Error</button>
+<button onclick="triggerInfiniteLoop()">Trigger Infinite Loop (CPU Chaos)</button>
+
+<!-- Error log to display caught errors -->
+<div id="error-log"></div>
+</body>
+</html>
