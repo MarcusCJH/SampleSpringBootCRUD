@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hehe - Book List</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Optional -->
+    <script>
+
+        (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
+            'cwr',
+            'eef4b9f4-79cc-4d5a-bf39-86b62513a395',
+            '1.0.0',
+            'us-east-1',
+            'https://client.rum.us-east-1.amazonaws.com/1.18.0/cwr.js',
+            {
+                sessionSampleRate: 1,
+                identityPoolId: "us-east-1:60e31436-af5a-4565-97df-8f33081ea4ed",
+                endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
+                telemetries: ["performance","errors","http"],
+                allowCookies: true,
+                enableXRay: true
+            }
+        );
+
+        // Function to fetch the list of books and display them
+        function fetchBooks() {
+            fetch('/api/books')  // Call the API
+                .then(response => response.json())  // Parse JSON from response
+                .then(books => {
+                    const bookList = document.getElementById('bookList');
+                    bookList.innerHTML = '';  // Clear any existing content
+
+                    // Loop through the books and display them
+                    books.forEach(book => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${book.title} by ${book.author} (Published: ${book.publishedDate})`;
+                        bookList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching books:', error);
+                    document.getElementById('error').textContent = 'Error fetching book list.';
+                });
+        }
+
+        // Function to create a new book by sending a POST request
+        function createBook(event) {
+            event.preventDefault();  // Prevent form from submitting the traditional way
+
+            // Get the values from the form
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const publishedDate = document.getElementById('publishedDate').value;
+
+            // Build the book object
+            const newBook = {
+                title: title,
+                author: author,
+                publishedDate: publishedDate
+            };
+
+            // Send a POST request to the API to create the book
+            fetch('/api/books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newBook),
+            })
+                .then(response => response.json())
+                .then(book => {
+                    // alert(`Book "${book.title}" created successfully!`);
+                    fetchBooks();  // Refresh the book list after creation
+                })
+                .catch(error => {
+                    console.error('Error creating book:', error);
+                    document.getElementById('error').textContent = 'Error creating book.';
+                });
+
+            // Clear the form
+            document.getElementById('bookForm').reset();
+        }
+
+        // Fetch books when the page loads
+        window.onload = function() {
+            fetchBooks();
+        };
+    </script>
+</head>
+<body>
+<h1>Hehe - Book List</h1>
+
+<!-- Book creation form -->
+<h2>Create a New Book</h2>
+<form id="bookForm" onsubmit="createBook(event)">
+    <label for="title">Title:</label>
+    <input type="text" id="title"><br>
+
+    <label for="author">Author:</label>
+    <input type="text" id="author" ><br>
+
+    <label for="publishedDate">Published Date:</label>
+    <input type="date" id="publishedDate"><br>
+
+    <button type="submit">Create Book</button>
+</form>
+
+<!-- Error message placeholder -->
+<p id="error" style="color:red;"></p>
+
+<!-- List where books will be displayed -->
+<ul id="bookList">
+    <!-- JavaScript will populate this list with books -->
+</ul>
+
+
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Book Application</title>
+  <link rel="stylesheet" href="/css/styles.css"> <!-- Optional, if you have a CSS file -->
+  <script>
+    (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
+            'cwr',
+            'eef4b9f4-79cc-4d5a-bf39-86b62513a395',
+            '1.0.0',
+            'us-east-1',
+            'https://client.rum.us-east-1.amazonaws.com/1.18.0/cwr.js',
+            {
+              sessionSampleRate: 1,
+              identityPoolId: "us-east-1:60e31436-af5a-4565-97df-8f33081ea4ed",
+              endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
+              telemetries: ["performance","errors","http"],
+              allowCookies: true,
+              enableXRay: true
+            }
+    );
+
+    // Normal JavaScript Function
+    function normalFunction() {
+      alert("This is a normal JavaScript function!");
+    }
+
+    // JavaScript Function that throws an error
+    function errorFunction() {
+      try {
+        // Deliberately cause an error (undefined variable)
+        alert(undefinedVariable);
+      } catch (error) {
+        console.error("An error occurred:", error.message);
+        alert("An error occurred: " + error.message);
+      }
+    }
+
+    // High CPU Usage Simulation for 10 seconds
+    function highCpuUsageFunction() {
+      alert("Simulating high CPU usage for 10 seconds... Your browser may become unresponsive.");
+      const endTime = Date.now() + 10000;  // 10 seconds from now
+      while (Date.now() < endTime) {
+        Math.pow(Math.random(), Math.random());  // Busy loop that consumes CPU
+      }
+      alert("High CPU usage simulation completed.");
+    }
+
+    // Out of Memory Simulation for 10 seconds
+    function outOfMemoryFunction() {
+      alert("Simulating out-of-memory error for 10 seconds...");
+      const endTime = Date.now() + 10000;  // 10 seconds from now
+      let largeArray = [];
+      try {
+        while (Date.now() < endTime) {
+          largeArray.push(new Array(1000000).fill(0));  // Allocate large memory chunks
+        }
+        alert("Out of memory simulation completed.");
+      } catch (error) {
+        console.error("Out of Memory error:", error.message);
+        alert("Out of Memory error: " + error.message);
+      }
+    }
+
+    // Stack Overflow Simulation
+    function stackOverflowFunction() {
+      alert("Simulating stack overflow...");
+      function recursiveFunction() {
+        return recursiveFunction();  // Infinite recursion
+      }
+      try {
+        recursiveFunction();
+      } catch (error) {
+        console.error("Stack Overflow error:", error.message);
+        alert("Stack Overflow error: " + error.message);
+      }
+    }
+  </script>
+</head>
+<body>
+<h1>Welcome to the Book Application</h1>
+<p>This is the home page of your book CRUD application.</p>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/books">Create New Book</a></li>
+    <li><a href="/hehe.html">API</a></li>
+  </ul>
+</nav>
+
+<!-- Buttons to trigger JavaScript functions -->
+<button onclick="normalFunction()">Click for Normal Function</button>
+<button onclick="errorFunction()">Click for Error Function</button>
+<button onclick="highCpuUsageFunction()">Click for High CPU Usage Function</button>
+<button onclick="outOfMemoryFunction()">Click for Out of Memory Function</button>
+<button onclick="stackOverflowFunction()">Click for Stack Overflow Function</button>
+
+</body>
+</html>
