@@ -4,10 +4,17 @@
 <head th:replace="fragments/head :: head(title='Book List')"></head>
 <body>
 <h1>Book List</h1>
+
+<!-- Error message display -->
+<div th:if="${errorMessage != null}">
+    <p th:text="${errorMessage}" style="color:red;"></p>
+</div>
 <a href="/cpu-crash">Simulate Crash CPU</a><br>
 <a href="/memory-crash">Simulate Crash RAM</a><br>
-<a href="/new">Create New Book</a><br>
-<table>
+<a href="/books/new">Create New Book</a><br>
+<br><br>
+
+<table border="1">
     <thead>
     <tr>
         <th>Title</th>
@@ -22,8 +29,8 @@
         <td th:text="${book.author}"></td>
         <td th:text="${book.publishedDate}"></td>
         <td>
-            <a th:href="@{/{id}/edit(id=${book.id})}">Edit</a>
-            <a th:href="@{/{id}/delete(id=${book.id})}">Delete</a>
+            <a th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a> |
+            <a th:href="@{/books/{id}/delete(id=${book.id})}" onclick="return confirm('Are you sure you want to delete this book?');">Delete</a>
         </td>
     </tr>
     </tbody>

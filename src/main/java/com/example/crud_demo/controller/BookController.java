@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/books")
 @XRayEnabled
 public class BookController {
 
@@ -83,7 +83,7 @@ public class BookController {
         // Create the book in the database
         bookService.createBook(book);
         logger.debug("Book created successfully: {}", book.getTitle());
-        return "redirect:/";
+        return "redirect:/books";
     }
 
     // Edit book form
@@ -106,7 +106,7 @@ public class BookController {
         logger.debug("Updating book with ID {} and title {}", id, book.getTitle());
         bookService.updateBook(id, book);
         logger.debug("Book updated successfully");
-        return "redirect:/";
+        return "redirect:/books";
     }
 
     // Delete book
@@ -115,6 +115,6 @@ public class BookController {
         logger.debug("Deleting book with ID {}", id);
         bookService.deleteBook(id);
         logger.debug("Book deleted successfully");
-        return "redirect:/";
+        return "redirect:/books";
     }
 }
