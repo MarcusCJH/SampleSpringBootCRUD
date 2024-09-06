@@ -12,5 +12,5 @@ OTEL_AWS_APPLICATION_SIGNALS_ENABLED=true \
 OTEL_AWS_APPLICATION_SIGNALS_EXPORTER_ENDPOINT=http://localhost:4316/v1/metrics \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4316/v1/traces \
-OTEL_RESOURCE_ATTRIBUTES="service.name=$YOUR_SVC_NAME" \
-java -jar $MY_JAVA_APP.jar
+OTEL_RESOURCE_ATTRIBUTES="service.name=crud-demo" \
+java -jar target/crud-demo-0.0.1-SNAPSHOT.jar
