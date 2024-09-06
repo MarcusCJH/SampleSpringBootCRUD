@@ -1,5 +1,6 @@
 package com.example.crud_demo.controller;
 
+import com.amazonaws.xray.spring.aop.XRayEnabled;
 import com.example.crud_demo.model.Book;
 import com.example.crud_demo.service.BookService;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
+@XRayEnabled
 public class BookController {
 
     private static final Logger logger = LoggerFactory.getLogger(BookController.class);
@@ -40,6 +42,7 @@ public class BookController {
 
     // Create a new book with error injection logic
     @PostMapping
+    @XRayEnabled
     public String createBook(@ModelAttribute("book") Book book) {
         logger.debug("Creating book with title: {}", book.getTitle());
 

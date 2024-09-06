@@ -1,5 +1,6 @@
 package com.example.crud_demo.controller;
 
+import com.amazonaws.xray.spring.aop.XRayEnabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ public class StressTestController {
 
     // Max out CPU with multi-threading for 10 seconds
     @GetMapping("/cpu-crash")
+    @XRayEnabled
     public String cpuCrashTest() {
         logger.info("CPU crash test started");
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -46,6 +48,7 @@ public class StressTestController {
 
     // Max out heap memory for 10 seconds or until OutOfMemoryError
     @GetMapping("/memory-crash")
+    @XRayEnabled
     public String memoryCrashTest() {
         logger.info("Memory crash test started");
 
