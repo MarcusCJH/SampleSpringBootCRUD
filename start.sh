@@ -1,4 +1,4 @@
-```
+#!/bin/bash
 sudo yum install java-17-amazon-corretto-devel git tmux wget -y
 CLOUDWATCH_AGENT_DOWNLOAD_URL="https://amazoncloudwatch-agent.s3.amazonaws.com/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm"
 JAVA_INSTRUMENTATION_AGENT_DOWNLOAD_URL="https://github.com/aws-observability/aws-otel-java-instrumentation/releases/latest/download/aws-opentelemetry-agent.jar"
