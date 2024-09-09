@@ -4,10 +4,10 @@ sudo yum install maven -y
 CLOUDWATCH_AGENT_DOWNLOAD_URL="https://amazoncloudwatch-agent.s3.amazonaws.com/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm"
 wget $CLOUDWATCH_AGENT_DOWNLOAD_URL
 sudo rpm -U ./amazon-cloudwatch-agent.rpm
-sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:cloudwatch-agent.json
 
 rm -rf SampleSpringBootCRUD
 git clone https://github.com/MarcusCJH/SampleSpringBootCRUD.git
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:cloudwatch-agent.json
 cd SampleSpringBootCRUD
 mvn compile
 mvn package
