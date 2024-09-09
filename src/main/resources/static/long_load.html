@@ -55,7 +55,15 @@
         document.getElementById('content').style.display = 'block';
     }, 10000);  // 10 seconds delay
 
-    (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
+    // AWS RUM script
+    (function(n,i,v,r,s,c,x,z){
+        x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};
+        window[n]=function(c,p){x.q.push({c:c,p:p});};
+        z=document.createElement('script');
+        z.async=true;
+        z.src=s;
+        document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);
+    })(
         'cwr',
         '79a5d5d6-46af-4014-8403-cbb043963feb',
         '1.0.0',
