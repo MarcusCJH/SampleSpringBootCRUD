@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home - Book Application</title>
-  <link rel="stylesheet" href="/css/styles.css"> <!-- Optional, if you have a CSS file -->
   <script>
     (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
             'cwr',
@@ -16,7 +15,11 @@
               sessionSampleRate: 1,
               identityPoolId: "us-east-1:ff407c16-c430-423d-8f01-e68c6a98d714",
               endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
-              telemetries: ["performance","errors","http"],
+              telemetries: [
+                'errors',
+                'performance',
+                [ 'http', { addXRayTraceIdHeader: true } ]
+              ],
               allowCookies: true,
               enableXRay: true
             }
