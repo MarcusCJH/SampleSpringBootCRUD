@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -21,29 +22,27 @@ public class StressTestController {
     @GetMapping("/cpu-crash")
     @XRayEnabled
     public String cpuCrashTest() {
-        logger.info("CPU crash test started");
-        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        logger.info("Starting CPU spike for 20 seconds...");
 
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
+
+        // Create CPU spike by starting multiple threads
         for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
-            executorService.submit(() -> {
+            scheduler.submit(() -> {
                 long startTime = System.currentTimeMillis();
-                while (System.currentTimeMillis() - startTime < 10000) {  // Run for 10 seconds
-                    Math.pow(Math.random(), Math.random());  // Busy-wait loop
+                while (System.currentTimeMillis() - startTime < 20000) {  // Run for 20 seconds
+                    Math.pow(Math.random(), Math.random());  // Busy-wait to consume CPU
                 }
             });
         }
 
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(12, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
-        }
+        // Shutdown the threads after 20 seconds
+        scheduler.schedule(() -> {
+            logger.info("Stopping CPU spike after 20 seconds...");
+            scheduler.shutdownNow();
+        }, 20, TimeUnit.SECONDS);
 
-        logger.info("CPU crash test completed.");
-        return "CPU crash test ran for 10 seconds. Check CPU usage.";
+        return "CPU spike running for 20 seconds!";
     }
 
     // Max out heap memory for 10 seconds or until OutOfMemoryError
@@ -66,4 +65,40 @@ public class StressTestController {
         logger.info("Memory crash test completed.");
         return "Memory crash test ran for 10 seconds. Check memory usage.";
     }
+
+    @GetMapping("/combined-spike")
+    @XRayEnabled
+    public String causeCombinedSpikeFor20Seconds() {
+        logger.info("Starting combined CPU and memory spike for 20 seconds...");
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
+
+        // CPU spike
+        for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
+            scheduler.submit(() -> {
+                long startTime = System.currentTimeMillis();
+                while (System.currentTimeMillis() - startTime < 20000) {  // Run for 20 seconds
+                    Math.pow(Math.random(), Math.random());  // CPU stress
+                }
+            });
+        }
+
+        // Memory spike
+        List<int[]> memoryHog = new ArrayList<>();
+        long startTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startTime < 20000) {
+            memoryHog.add(new int[1000000]);  // Memory stress
+        }
+
+        // Shutdown CPU spike threads after 20 seconds
+        scheduler.schedule(() -> {
+            logger.info("Stopping CPU spike after 20 seconds...");
+            scheduler.shutdownNow();
+        }, 20, TimeUnit.SECONDS);
+
+        logger.info("Combined spike stopped after 20 seconds.");
+        return "Combined CPU and memory spike ran for 20 seconds!";
+    }
+
+
 }
