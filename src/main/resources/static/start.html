@@ -17,6 +17,11 @@
                 enableXRay: true
             }
         );
+
+        // Function to go back to the previous page
+        function goBack() {
+            window.history.back();  // This will navigate back to the previous page in the browser's history
+        }
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,6 +31,9 @@
 <h1>Welcome to the Journey</h1>
 <p>This is the first step of your journey.</p>
 <button onclick="goToNextPage()">Start the Journey</button>
+<!-- Back button -->
+<button onclick="goBack()">Go Back</button>
+</div>
 
 <script>
     function goToNextPage() {

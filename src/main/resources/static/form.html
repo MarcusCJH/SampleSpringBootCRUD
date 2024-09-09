@@ -14,6 +14,10 @@
     <input type="email" id="email" name="email" required><br>
     <button type="submit">Submit</button>
 </form>
+<div>
+<!-- Back button -->
+<button onclick="goBack()">Go Back</button>
+</div>
 
 <script>
     (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
@@ -39,6 +43,11 @@
 
         // Redirect to confirmation.html, passing the data as query parameters
         window.location.href = `confirmation.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
+    }
+
+    // Function to go back to the previous page
+    function goBack() {
+        window.history.back();  // This will navigate back to the previous page in the browser's history
     }
 </script>
 </body>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulating Long Load Time</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        #content {
+            display: none;
+        }
+        .spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            margin: auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Loading... Please wait</h1>
+<div class="spinner"></div>
+
+<!-- Hidden content that will be displayed after the delay -->
+<div id="content">
+    <h2>Finally Loaded!</h2>
+    <p>This content took a long time to load, but here it is.</p>
+
+    <!-- Back button -->
+    <button onclick="goBack()">Go Back</button>
+</div>
+
+<script>
+    // Simulate a long load time (e.g., 10 seconds)
+    setTimeout(function() {
+        document.querySelector('.spinner').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+    }, 10000);  // 10 seconds delay
+
+    // Function to go back to the previous page
+    function goBack() {
+        window.history.back();  // This will navigate back to the previous page in the browser's history
+    }
+</script>
+
+</body>
+</html>
