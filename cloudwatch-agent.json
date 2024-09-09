@@ -1,6 +1,37 @@
 {
+  "agent": {
+    "metrics_collection_interval": 60
+  },
+  "metrics": {
+    "namespace": "CWAgent",
+    "append_dimensions": {
+      "ImageId": "${aws:ImageId}",
+      "InstanceId": "${aws:InstanceId}",
+      "InstanceType": "${aws:InstanceType}"
+    },
+    "metrics_collected": {
+      "mem": {
+        "measurement": [
+          "used_percent"
+        ]
+      },
+      "cpu": {
+        "measurement": [
+          "usage_active"
+        ]
+      },
+      "net": {
+        "measurement": [
+          "bytes_sent",
+          "bytes_recv"
+        ]
+      }
+    }
+  },
   "traces": {
     "traces_collected": {
+      "xray": {},
+      "otlp": {},
       "application_signals": {}
     }
   },
