@@ -73,8 +73,8 @@ public class StressTestController {
     // Simulate combined CPU and memory spike for 20 seconds and then render the page
     @GetMapping("/combined-crash")
     @XRayEnabled
-    public String causeCombinedSpikeFor20Seconds(Model model) throws InterruptedException {
-        logger.info("Starting combined CPU and memory spike for 20 seconds...");
+    public String causeCombinedSpikeFor60Seconds(Model model) throws InterruptedException {
+        logger.info("Starting combined CPU and memory spike for 60 seconds...");
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
@@ -82,7 +82,7 @@ public class StressTestController {
         for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
             scheduler.submit(() -> {
                 long startTime = System.currentTimeMillis();
-                while (System.currentTimeMillis() - startTime < 20000) {  // Run for 20 seconds
+                while (System.currentTimeMillis() - startTime < 60000) {  // Run for 60 seconds
                     Math.pow(Math.random(), Math.random());  // CPU stress
                 }
             });
@@ -91,20 +91,21 @@ public class StressTestController {
         // Memory spike
         List<int[]> memoryHog = new ArrayList<>();
         long startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startTime < 20000) {
+        while (System.currentTimeMillis() - startTime < 60000) {
             memoryHog.add(new int[1000000]);  // Memory stress
         }
 
         // Wait for all threads to finish
-        scheduler.awaitTermination(20, TimeUnit.SECONDS);
+        scheduler.awaitTermination(60, TimeUnit.SECONDS);
 
-        // Shutdown CPU spike threads after 20 seconds
+        // Shutdown CPU spike threads after 60 seconds
         scheduler.shutdown();
-        logger.info("Combined spike finished. Rendering the page...");
+        logger.info("Combined spike finished after 60 seconds. Rendering the page...");
 
         model.addAttribute("message", "Combined CPU and memory spike completed!");
         return "combined_crash";  // Renders combined_crash.html after task completion
     }
+
 
     // Simulate latency before rendering a page
     @GetMapping("/latency-drag")
