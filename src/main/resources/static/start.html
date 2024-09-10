@@ -15,7 +15,7 @@
                 telemetries: [
                     'errors',
                     'performance',
-                    [ 'http', { addXRayTraceIdHeader: true } ]
+                    [ 'http', { addXRayTraceIdHeader: true, recordAllRequests:true} ]
                 ],
                 allowCookies: true,
                 enableXRay: true
