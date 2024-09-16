@@ -1,45 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - Book Application</title>
-  <script>
-    (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
-            'cwr',
-            '54dec8e6-d356-442d-b67e-98b65ff7e9fa',
-            '1.0.0',
-            'ap-southeast-1',
-            'https://client.rum.us-east-1.amazonaws.com/1.18.0/cwr.js',
-            {
-              sessionSampleRate: 1,
-              identityPoolId: "ap-southeast-1:574d874e-3d09-4b49-a5e9-312ca6205e6e",
-              endpoint: "https://dataplane.rum.ap-southeast-1.amazonaws.com",
-              telemetries: [
-                'errors',
-                'performance',
-                [ 'http', { addXRayTraceIdHeader: true } ]
-              ],
-              allowCookies: true,
-              enableXRay: true
-            }
-    );
-  </script>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Include the head section -->
+<head th:replace="~{fragments/head :: head(title='Book List')}"></head>
 <body>
-<h1>Welcome to the Book Application</h1>
-<p>This is the home page of your book CRUD application.</p>
+<h1>List of Books</h1>
 
-<nav>
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/books">Create New Book</a></li>
-<!--    <li><a href="/api.html">API</a></li>-->
-<!--    <li><a href="/start.html">Start User Journey</a></li>-->
-    <li><a href="/chaos.html">Error Triggering</a></li>
+<!-- Table displaying the list of books -->
+<table id="booksTable">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Published Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Rows will be dynamically injected here -->
+    </tbody>
+</table>
 
-  </ul>
-</nav>
+<!-- Button to go back -->
+<button onclick="goBack()">Go Back</button>
 
+<script>
+    const API_URL = 'http://54.255.190.232:8080/api/books'; // Replace with your backend IP
+
+    // Fetch books from the API and display them in the table
+    window.onload = function() {
+        fetchBooks();
+    };
+
+    function fetchBooks() {
+        fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                const booksTable = document.getElementById('booksTable').getElementsByTagName('tbody')[0];
+                booksTable.innerHTML = ''; // Clear previous data
+                data.forEach(book => {
+                    const row = booksTable.insertRow();
+                    row.insertCell(0).textContent = book.title;
+                    row.insertCell(1).textContent = book.author;
+                    row.insertCell(2).textContent = book.publishedDate;
+                });
+            })
+            .catch(error => console.error('Error fetching books:', error));
+    }
+
+    // Function to go back to the previous page
+    function goBack() {
+        window.history.back();  // Navigate to the previous page
+    }
+</script>
 </body>
 </html>

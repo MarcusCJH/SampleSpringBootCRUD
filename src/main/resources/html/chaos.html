@@ -15,15 +15,24 @@
         }
     </style>
     <script>
+        // Check if the user has access to this page (admin role)
+        window.onload = function() {
+            const role = sessionStorage.getItem('role');
+            if (role !== 'admin') {
+                alert('Access denied! Admins only.');
+                window.location.href = 'index.html'; // Redirect to login page
+            }
+        };
+
         (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
             'cwr',
-            '54dec8e6-d356-442d-b67e-98b65ff7e9fa',
+            'f015700b-7e1b-428a-a668-9a7e673a21e5',
             '1.0.0',
             'ap-southeast-1',
             'https://client.rum.us-east-1.amazonaws.com/1.18.0/cwr.js',
             {
                 sessionSampleRate: 1,
-                identityPoolId: "ap-southeast-1:574d874e-3d09-4b49-a5e9-312ca6205e6e",
+                identityPoolId: "ap-southeast-1:749a6844-b3ea-4929-8a69-b0a98e364834",
                 endpoint: "https://dataplane.rum.ap-southeast-1.amazonaws.com",
                 telemetries: [
                     'errors',
@@ -99,7 +108,6 @@
                 });
         }
 
-
         // Simulate a network timeout
         function triggerTimeoutError() {
             const controller = new AbortController();
@@ -111,7 +119,7 @@
                     if (error.name === 'AbortError') {
                         console.error('Timeout error occurred:', error.message);
                         const errorLog = document.getElementById('error-log');
-                        errorLog.innerHTML += `<p class="error-log">Timeout error: {error.message}</p>`;
+                        errorLog.innerHTML += `<p class="error-log">Timeout error: ${error.message}</p>`;
                     }
                 });
         }
@@ -150,12 +158,10 @@
 
 <H1>ServerSide Error</H1>
 <!-- Buttons to trigger ServerSide errors -->
-<button onclick="window.location.href='/cpu-crash'">Simulate Crash CPU</button>
-<button onclick="window.location.href='/memory-crash'">Simulate Crash RAM</button>
-<button onclick="window.location.href='/combined-crash'">Simulate Combined Crash</button>
-<button onclick="window.location.href='/latency-drag'">Simulate Latency Drag</button>
-
-
+<button onclick="window.location.href='http://54.255.190.232:8080/cpu-crash'">Simulate Crash CPU</button>
+<button onclick="window.location.href='http://54.255.190.232:8080/memory-crash'">Simulate Crash RAM</button>
+<button onclick="window.location.href='http://54.255.190.232:8080/combined-crash'">Simulate Combined Crash</button>
+<button onclick="window.location.href='http://54.255.190.232:8080/latency-drag'">Simulate Latency Drag</button>
 
 <!-- Error log to display caught errors -->
 <div id="error-log"></div>
