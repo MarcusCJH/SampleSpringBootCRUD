@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- Include the head section -->
-<head th:replace="~{fragments/head :: head(title='Book List')}"></head>
+<head>
+<title>API</title>>
+</head>
 <body>
 <h1>List of Books</h1>
 
@@ -50,6 +52,26 @@
     function goBack() {
         window.history.back();  // Navigate to the previous page
     }
+
+    (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
+        'cwr',
+        '54dec8e6-d356-442d-b67e-98b65ff7e9fa',
+        '1.0.0',
+        'ap-southeast-1',
+        'https://client.rum.us-east-1.amazonaws.com/1.18.0/cwr.js',
+        {
+            sessionSampleRate: 1,
+            identityPoolId: "ap-southeast-1:574d874e-3d09-4b49-a5e9-312ca6205e6e",
+            endpoint: "https://dataplane.rum.ap-southeast-1.amazonaws.com",
+            telemetries: [
+                'errors',
+                'performance',
+                [ 'http', { addXRayTraceIdHeader: true, recordAllRequests:true } ]
+            ],
+            allowCookies: true,
+            enableXRay: true
+        }
+    );
 </script>
 </body>
 </html>

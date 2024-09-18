@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+        }
+        .login-form {
+            max-width: 300px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        input, select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Login</h1>
+
+<!-- Simulated Login Form -->
+<div class="login-form">
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Enter your username" required><br>
+    <label for="role">Role:</label>
+    <select id="role">
+        <option value="normal">Normal User</option>
+        <option value="admin">Admin</option>
+    </select><br>
+    <button onclick="login()">Login</button>
+</div>
+
+<script>
+    // Function to handle login
+    function login() {
+        // const username = document.getElementById('username').value;
+        const role = document.getElementById('role').value;
+
+        // if (username === '') {
+        //     alert('Please enter your username');
+        //     return;
+        // }
+
+        // Store login info in sessionStorage (username and role)
+        // sessionStorage.setItem('username', username);
+        sessionStorage.setItem('role', role);
+
+        // Redirect based on role
+        if (role === 'admin') {
+            window.location.href = 'admin_dashboard.html';
+        } else {
+            window.location.href = 'normal_dashboard.html';
+        }
+    }
+
+    (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
+        'cwr',
+        'f015700b-7e1b-428a-a668-9a7e673a21e5',
+        '1.0.0',
+        'ap-southeast-1',
+        'https://client.rum.us-east-1.amazonaws.com/1.18.0/cwr.js',
+        {
+            sessionSampleRate: 1,
+            identityPoolId: "ap-southeast-1:749a6844-b3ea-4929-8a69-b0a98e364834",
+            endpoint: "https://dataplane.rum.ap-southeast-1.amazonaws.com",
+            telemetries: [
+                'errors',
+                'performance',
+                [ 'http', { addXRayTraceIdHeader: true, recordAllRequests:true } ]
+            ],
+            allowCookies: true,
+            enableXRay: true
+        }
+    );
+</script>
+
+</body>
+</html>
