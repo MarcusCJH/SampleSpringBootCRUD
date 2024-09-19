@@ -2,13 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- Include the head section -->
 <head>
-<title>API</title>>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API - List of Books</title>
 </head>
 <body>
+
 <h1>List of Books</h1>
 
 <!-- Table displaying the list of books -->
-<table id="booksTable">
+<table id="booksTable" border="1" cellpadding="10">
     <thead>
     <tr>
         <th>Title</th>
@@ -22,6 +25,7 @@
 </table>
 
 <!-- Button to go back -->
+<br>
 <button onclick="goBack()">Go Back</button>
 
 <script>
@@ -34,18 +38,26 @@
 
     function fetchBooks() {
         fetch(API_URL)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
             .then(data => {
                 const booksTable = document.getElementById('booksTable').getElementsByTagName('tbody')[0];
                 booksTable.innerHTML = ''; // Clear previous data
                 data.forEach(book => {
                     const row = booksTable.insertRow();
-                    row.insertCell(0).textContent = book.title;
-                    row.insertCell(1).textContent = book.author;
-                    row.insertCell(2).textContent = book.publishedDate;
+                    row.insertCell(0).textContent = book.title || 'N/A';
+                    row.insertCell(1).textContent = book.author || 'N/A';
+                    row.insertCell(2).textContent = book.publishedDate || 'N/A';
                 });
             })
-            .catch(error => console.error('Error fetching books:', error));
+            .catch(error => {
+                console.error('Error fetching books:', error);
+                alert('Error fetching books. Please check your API.');
+            });
     }
 
     // Function to go back to the previous page
@@ -53,6 +65,7 @@
         window.history.back();  // Navigate to the previous page
     }
 
+    // AWS RUM (Real User Monitoring) script
     (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
         'cwr',
         '54dec8e6-d356-442d-b67e-98b65ff7e9fa',
