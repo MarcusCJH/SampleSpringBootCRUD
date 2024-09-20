@@ -93,3 +93,27 @@ else
   fi
   echo "Process $PID killed successfully."
 fi
+
+
+# Define the jar file name or a unique identifier for your Spring Boot application
+JAR_NAME="apicaller-0.0.1-SNAPSHOT.jar"
+
+# Find the PID of the Java process running the Spring Boot application
+PID=$(ps -ef | grep $JAR_NAME | grep -v grep | awk '{print $2}')
+
+# Check if the process is running
+if [ -z "$PID" ]; then
+  echo "No process found for $JAR_NAME."
+else
+  echo "Killing process $PID for $JAR_NAME..."
+  # Kill the process
+  kill $PID
+
+  # Optionally, force kill if it's not stopping
+  sleep 5  # Give some time for the process to terminate gracefully
+  if ps -p $PID > /dev/null; then
+    echo "Process $PID did not terminate, force killing..."
+    kill -9 $PID
+  fi
+  echo "Process $PID killed successfully."
+fi
