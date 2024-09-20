@@ -26,6 +26,34 @@ OTEL_RESOURCE_ATTRIBUTES="service.name=crud-demo" \
 nohup java -jar target/crud-demo-0.0.1-SNAPSHOT.jar > springboot.log 2>&1 &
 
 
+#For API Caller
+# For Backend Crud-App
+sudo yum install java-17-amazon-corretto-devel git tmux wget -y
+sudo yum install maven -y
+CLOUDWATCH_AGENT_DOWNLOAD_URL="https://amazoncloudwatch-agent.s3.amazonaws.com/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm"
+wget $CLOUDWATCH_AGENT_DOWNLOAD_URL
+sudo rpm -U ./amazon-cloudwatch-agent.rpm
+
+rm -rf apicaller
+git clone https://github.com/MarcusCJH/apicaller.git
+cd apicaller
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:cloudwatch-agent.json
+mvn compile
+mvn package
+
+export AWS_ADOT_JAVA_INSTRUMENTATION_PATH=./aws-opentelemetry-agent.jar
+JAVA_TOOL_OPTIONS=" -javaagent:$AWS_ADOT_JAVA_INSTRUMENTATION_PATH" \
+OTEL_METRICS_EXPORTER=none \
+OTEL_LOGS_EXPORT=none \
+OTEL_AWS_APPLICATION_SIGNALS_ENABLED=true \
+OTEL_AWS_APPLICATION_SIGNALS_EXPORTER_ENDPOINT=http://localhost:4316/v1/metrics \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4316/v1/traces \
+OTEL_RESOURCE_ATTRIBUTES="service.name=apicaller" \
+nohup java -jar target/apicaller-0.0.1-SNAPSHOT.jar > springboot.log 2>&1 &
+
+
+
 #For Web Application  1
 sudo yum update -y
 sudo yum install httpd -y

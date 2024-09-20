@@ -23,6 +23,7 @@ public class BookController {
 
     // GET all books
     @GetMapping
+    @XRayEnabled
     public List<Book> getAllBooks() {
         logger.debug("Fetching all books");
         return bookService.getAllBooks();  // Return JSON list of books
@@ -30,6 +31,7 @@ public class BookController {
 
     // GET a specific book by ID
     @GetMapping("/{id}")
+    @XRayEnabled
     public Optional<Book> getBookById(@PathVariable("id") Long id) {
         logger.debug("Fetching book with ID {}", id);
         return bookService.getBookById(id);  // Return JSON for a specific book
@@ -79,6 +81,7 @@ public class BookController {
 
     // PUT to update an existing book
     @PutMapping("/{id}")
+    @XRayEnabled
     public Book updateBook(@PathVariable("id") Long id, @RequestBody Book book) {
         logger.debug("Updating book with ID {} and title {}", id, book.getTitle());
         return bookService.updateBook(id, book);  // Return the updated book as JSON
@@ -86,6 +89,7 @@ public class BookController {
 
     // DELETE a book by ID
     @DeleteMapping("/{id}")
+    @XRayEnabled
     public void deleteBook(@PathVariable("id") Long id) {
         logger.debug("Deleting book with ID {}", id);
         bookService.deleteBook(id);
