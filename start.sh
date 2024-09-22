@@ -65,10 +65,11 @@ rm -rf SampleSpringBootCRUD
 git clone https://github.com/MarcusCJH/SampleSpringBootCRUD.git
 cd SampleSpringBootCRUD
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:cloudwatch-agent.json
-cd SampleSpringBootCRUD/src/main/resources/html
+cd src/main/resources/html
 sudo cp -r * /var/www/html/
-sudo systemctl start httpd
-sudo systemctl enable httpd
+#sudo systemctl start httpd
+# systemctl enable httpd
+sudo systemctl restart httpd
 
 
 # Define the jar file name or a unique identifier for your Spring Boot application

@@ -62,8 +62,9 @@
 
         // Helper function to trigger server-side simulations via API
         function callStressTest(endpoint, description) {
-            // const apiUrl = `http://localhost:8080${endpoint}`;
-            const apiUrl = `http://13.229.129.5:8080${endpoint}`;
+            // const apiUrl = `http://localhost:8080${endpoint}`; // End point for localhost
+            // const apiUrl = `http://13.229.129.5:8080${endpoint}`; // EndPoint for Crud-demo
+            const apiUrl = `http://13.229.129.5:8080${endpoint}`; //End point for apicaller
             fetch(apiUrl)
                 .then(response => {
                     if (!response.ok) {
@@ -159,15 +160,15 @@
     </script>
 </head>
 <body>
-<h1>Chaos - Error Simulation</h1>
+<h1>Error Simulation</h1>
 
 <!-- Section: Client-Side Errors -->
 <h2 class="section-title">Client-Side Errors</h2>
 <button onclick="triggerReferenceError()">Trigger ReferenceError</button>
 <button onclick="triggerTypeError()">Trigger TypeError</button>
 <button onclick="triggerSyntaxError()">Trigger SyntaxError</button>
-<button onclick="triggerOutOfMemoryError()">Trigger Out of Memory Error</button>
-<button onclick="triggerInfiniteLoop()">Trigger Infinite Loop</button>
+<!--<button onclick="triggerOutOfMemoryError()">Trigger Out of Memory Error</button>-->
+<!--<button onclick="triggerInfiniteLoop()">Trigger Infinite Loop</button>-->
 
 <!-- Section: Client-Side Network/HTTP Errors -->
 <h2 class="section-title">Client-Side Network/HTTP Errors</h2>
@@ -176,15 +177,15 @@
 <button onclick="triggerTimeoutError()">Trigger Timeout Error</button>
 <button onclick="triggerCORSError()">Trigger CORS Error</button>
 
-<!-- Section: Server-Side Errors / Chaos Testing -->
+<!-- Section: Server-Side Errors -->
 <h2 class="section-title">Server-Side Errors</h2>
-<button onclick="callStressTest('/api/cpu-crash', 'CPU Crash')">Simulate CPU Crash</button>
-<button onclick="callStressTest('/api/memory-crash', 'Memory Crash')">Simulate Memory Crash</button>
-<button onclick="callStressTest('/api/combined-crash', 'Combined Crash')">Simulate Combined Crash</button>
-<button onclick="callStressTest('/api/latency-drag', 'Latency Drag')">Simulate Latency Drag</button>
-<button onclick="callStressTest('/api/simulate-500', 'Simulate 500 Error')">Simulate 500 Error</button>
-<button onclick="callStressTest('/api/simulate-502', 'Simulate 502 Error')">Simulate 502 Error</button>
-<button onclick="callStressTest('/api/simulate-504', 'Simulate 504 Error')">Simulate 504 Error</button>
+<button onclick="callStressTest('/api/stress/cpu-crash', 'CPU Crash')">Simulate CPU Crash</button>
+<button onclick="callStressTest('/api/stress/memory-crash', 'Memory Crash')">Simulate Memory Crash</button>
+<button onclick="callStressTest('/api/stress/combined-crash', 'Combined Crash')">Simulate Combined Crash</button>
+<button onclick="callStressTest('/api/stress/latency-drag', 'Latency Drag')">Simulate Latency Drag</button>
+<button onclick="callStressTest('/api/stress/simulate-500', 'Simulate 500 Error')">Simulate 500 Error</button>
+<button onclick="callStressTest('/api/stress/simulate-502', 'Simulate 502 Error')">Simulate 502 Error</button>
+<button onclick="callStressTest('/api/stress/simulate-504', 'Simulate 504 Error')">Simulate 504 Error</button>
 
 <!-- Error log to display caught errors -->
 <div id="error-log"></div>
