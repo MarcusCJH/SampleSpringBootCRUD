@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chaos - Error Simulation1</title>
+    <title>Chaos - Error Simulation</title>
     <style>
         button {
             margin: 10px;
@@ -13,6 +13,13 @@
         .error-log {
             color: red;
         }
+        .success-log {
+            color: green;
+        }
+        .section-title {
+            font-size: 20px;
+            margin-top: 30px;
+        }
     </style>
     <script>
         // Check if the user has access to this page (admin role)
@@ -20,7 +27,7 @@
             const role = sessionStorage.getItem('role');
             if (role !== 'admin') {
                 alert('Access denied! Admins only.');
-                window.location.href = 'index.html'; // Redirect to login page
+                window.location.href = 'index.html'; // Redirect to index or login page
             }
         };
 
@@ -51,6 +58,27 @@
             errorLog.innerHTML += `<p class="error-log">Caught error: ${message} (Line: ${lineno}, Col: ${colno})</p>`;
             return true;  // Prevent default browser error handling
         };
+
+        // Helper function to trigger server-side simulations via API
+        function callStressTest(endpoint, description) {
+            const apiUrl = `http://13.229.129.5:8080${endpoint}`;
+            // const apiUrl = `http://localhost:8080${endpoint}`;
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`${description} failed with status ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(result => {
+                    console.log(`${description} successful:`, result);
+                    document.getElementById('success-log').innerHTML += `<p class="success-log">${description} successful!</p>`;
+                })
+                .catch(error => {
+                    console.error(`${description} failed:`, error);
+                    document.getElementById('error-log').innerHTML += `<p class="error-log">${description} failed: ${error.message}</p>`;
+                });
+        }
 
         // Trigger a ReferenceError (undefined variable)
         function triggerReferenceError() {
@@ -137,33 +165,40 @@
     </script>
 </head>
 <body>
-<h1>Chaos - JavaScript / Network Error Simulation / Server Side Error</h1>
-<p>Click the buttons below to simulate different types of JavaScript and network errors.</p>
+<h1>Chaos - JavaScript / Network Error Simulation / Server-Side Error</h1>
 
-<H1>Javascript Stuff</H1>
-<!-- Buttons to trigger different JavaScript errors -->
+<!-- Section: JavaScript Errors -->
+<h2 class="section-title">JavaScript Errors</h2>
 <button onclick="triggerReferenceError()">Trigger ReferenceError</button>
 <button onclick="triggerTypeError()">Trigger TypeError</button>
 <button onclick="triggerSyntaxError()">Trigger SyntaxError</button>
 <button onclick="triggerOutOfMemoryError()">Trigger Out of Memory Error</button>
 <button onclick="triggerInfiniteLoop()">Trigger Infinite Loop (CPU Chaos)</button>
-<button onclick="window.location.href='/long_load.html'">Simulate Long Load JS</button><br>
+<button onclick="window.location.href='/long_load.html'">Simulate Long Load JS</button>
 
-<H1>Network/HTTP Errors</H1>
-<!-- Buttons to trigger network/HTTP errors -->
+<!-- Section: Network/HTTP Errors -->
+<h2 class="section-title">Network/HTTP Errors</h2>
 <button onclick="triggerNetworkFailure()">Trigger Network Failure</button>
 <button onclick="trigger404Error()">Trigger 404 Not Found Error</button>
 <button onclick="triggerTimeoutError()">Trigger Timeout Error</button>
 <button onclick="triggerCORSError()">Trigger CORS Error</button>
 
-<H1>ServerSide Error</H1>
-<!-- Buttons to trigger ServerSide errors -->
-<button onclick="window.location.href='http://13.229.129.5:8080/cpu-crash'">Simulate Crash CPU</button>
-<button onclick="window.location.href='http://13.229.129.5:8080/memory-crash'">Simulate Crash RAM</button>
-<button onclick="window.location.href='http://13.229.129.5:8080/combined-crash'">Simulate Combined Crash</button>
-<button onclick="window.location.href='http://13.229.129.5:8080/latency-drag'">Simulate Latency Drag</button>
+<!-- Section: Server-Side Errors -->
+<h2 class="section-title">Server-Side Errors</h2>
+<button onclick="callStressTest('/api/cpu-crash', 'CPU Crash')">Simulate Crash CPU</button>
+<button onclick="callStressTest('/api/memory-crash', 'Memory Crash')">Simulate Crash RAM</button>
+<button onclick="callStressTest('/api/combined-crash', 'Combined Crash')">Simulate Combined Crash</button>
+<button onclick="callStressTest('/api/latency-drag', 'Latency Drag')">Simulate Latency Drag</button>
+<button onclick="callStressTest('/api/simulate-500', 'Simulate 500')">Simulate 500</button>
+<button onclick="callStressTest('/api/simulate-502', 'Simulate 502')">Simulate 502</button>
+<button onclick="callStressTest('/api/simulate-504', 'Simulate 504')">Simulate 504</button>
+
+
 
 <!-- Error log to display caught errors -->
 <div id="error-log"></div>
+<!-- Success log to display successful executions -->
+<div id="success-log"></div>
+
 </body>
 </html>
