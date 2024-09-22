@@ -23,14 +23,14 @@
         }
     </style>
     <script>
-        // Check if the user has access to this page (admin role)
-        window.onload = function() {
-            const role = sessionStorage.getItem('role');
-            if (role !== 'admin') {
-                alert('Access denied! Admins only.');
-                window.location.href = 'index.html'; // Redirect to index or login page
-            }
-        };
+        // // Check if the user has access to this page (admin role)
+        // window.onload = function() {
+        //     const role = sessionStorage.getItem('role');
+        //     if (role !== 'admin') {
+        //         alert('Access denied! Admins only.');
+        //         window.location.href = 'index.html'; // Redirect to index or login page
+        //     }
+        // };
 
         (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
             'cwr',
@@ -62,8 +62,8 @@
 
         // Helper function to trigger server-side simulations via API
         function callStressTest(endpoint, description) {
-            // const apiUrl = `http://localhost:8080${endpoint}`;
-            const apiUrl = `http://13.229.129.5:8080${endpoint}`;
+            const apiUrl = `http://localhost:8080${endpoint}`;
+            // const apiUrl = `http://13.229.129.5:8080${endpoint}`;
             fetch(apiUrl)
                 .then(response => {
                     if (!response.ok) {
@@ -167,7 +167,7 @@
 <button onclick="triggerTypeError()">Trigger TypeError</button>
 <button onclick="triggerSyntaxError()">Trigger SyntaxError</button>
 <button onclick="triggerOutOfMemoryError()">Trigger Out of Memory Error</button>
-<button onclick="triggerInfiniteLoop()">Trigger Infinite Loop</button>
+<button onclick="triggerInfiniteLoop()">Trigger Infinite Loop (CPU Chaos)</button>
 
 <!-- Section: Client-Side Network/HTTP Errors -->
 <h2 class="section-title">Client-Side Network/HTTP Errors</h2>
@@ -176,7 +176,7 @@
 <button onclick="triggerTimeoutError()">Trigger Timeout Error</button>
 <button onclick="triggerCORSError()">Trigger CORS Error</button>
 
-<!-- Section: Server-Side Errors / Chaos Testing -->
+<!-- Section: Server-Side Errors -->
 <h2 class="section-title">Server-Side Errors</h2>
 <button onclick="callStressTest('/api/cpu-crash', 'CPU Crash')">Simulate CPU Crash</button>
 <button onclick="callStressTest('/api/memory-crash', 'Memory Crash')">Simulate Memory Crash</button>
