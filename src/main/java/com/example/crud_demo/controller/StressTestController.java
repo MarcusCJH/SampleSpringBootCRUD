@@ -3,9 +3,10 @@ package com.example.crud_demo.controller;
 import com.amazonaws.xray.spring.aop.XRayEnabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Controller
+@RestController
+@RequestMapping("/api")  // Prefix all endpoints with /api
 public class StressTestController {
 
     private static final Logger logger = LoggerFactory.getLogger(StressTestController.class);
 
-    // Max out CPU with multi-threading for 20 seconds and then render the page
+    // Max out CPU with multi-threading for 20 seconds and then return a response
     @GetMapping("/cpu-crash")
     @XRayEnabled
-    public String cpuCrashTest(Model model) throws InterruptedException {
+    public ResponseEntity<String> cpuCrashTest() throws InterruptedException {
         logger.info("Starting CPU spike for 20 seconds...");
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
@@ -41,16 +43,15 @@ public class StressTestController {
 
         // Shutdown the threads after 20 seconds
         scheduler.shutdown();
-        logger.info("CPU spike finished. Rendering the page...");
+        logger.info("CPU spike finished.");
 
-        model.addAttribute("message", "CPU spike completed!");
-        return "cpu_crash";  // Renders cpu_crash.html after task completion
+        return ResponseEntity.ok("CPU spike completed!");  // Return a JSON response
     }
 
-    // Max out heap memory for 10 seconds or until OutOfMemoryError and then render the page
+    // Max out heap memory for 10 seconds or until OutOfMemoryError and then return a response
     @GetMapping("/memory-crash")
     @XRayEnabled
-    public String memoryCrashTest(Model model) {
+    public ResponseEntity<String> memoryCrashTest() {
         logger.info("Memory crash test started");
 
         List<int[]> memoryHog = new ArrayList<>();
@@ -61,19 +62,17 @@ public class StressTestController {
             }
         } catch (OutOfMemoryError e) {
             logger.error("OutOfMemoryError caught: {}", e.getMessage());
-            model.addAttribute("message", "OutOfMemoryError: Memory crash test completed!");
-            return "memory_crash";  // Renders memory_crash.html with the error message
+            return ResponseEntity.ok("OutOfMemoryError: Memory crash test completed!");  // Return error response
         }
 
-        logger.info("Memory crash test completed. Rendering the page...");
-        model.addAttribute("message", "Memory crash completed successfully!");
-        return "memory_crash";  // Renders memory_crash.html after task completion
+        logger.info("Memory crash test completed.");
+        return ResponseEntity.ok("Memory crash completed successfully!");  // Return success response
     }
 
-    // Simulate combined CPU and memory spike for 20 seconds and then render the page
+    // Simulate combined CPU and memory spike for 60 seconds and then return a response
     @GetMapping("/combined-crash")
     @XRayEnabled
-    public String causeCombinedSpikeFor60Seconds(Model model) throws InterruptedException {
+    public ResponseEntity<String> causeCombinedSpikeFor60Seconds() throws InterruptedException {
         logger.info("Starting combined CPU and memory spike for 60 seconds...");
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
@@ -100,24 +99,20 @@ public class StressTestController {
 
         // Shutdown CPU spike threads after 60 seconds
         scheduler.shutdown();
-        logger.info("Combined spike finished after 60 seconds. Rendering the page...");
+        logger.info("Combined spike finished after 60 seconds.");
 
-        model.addAttribute("message", "Combined CPU and memory spike completed!");
-        return "combined_crash";  // Renders combined_crash.html after task completion
+        return ResponseEntity.ok("Combined CPU and memory spike completed!");  // Return response after task completion
     }
 
-
-    // Simulate latency before rendering a page
+    // Simulate latency before returning a response
     @GetMapping("/latency-drag")
-    public String simulateLatency(Model model) throws InterruptedException {
-        logger.info("Simulating latency before rendering the page...");
+    public ResponseEntity<String> simulateLatency() throws InterruptedException {
+        logger.info("Simulating latency before responding...");
 
-        // Simulate a 5-second delay (5000 milliseconds)
-        Thread.sleep(5000);
+        // Simulate a 20-second delay (20000 milliseconds)
+        Thread.sleep(20000);
 
-        logger.info("Page rendered after 5-second delay.");
-        model.addAttribute("message", "This page had a forced latency!");
-
-        return "latency_drag";  // Renders latency_drag.html after the delay
+        logger.info("Response sent after 20-second delay.");
+        return ResponseEntity.ok("This response had a forced latency of 20 seconds!");
     }
 }
