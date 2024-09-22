@@ -15,12 +15,40 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/api")  // Prefix all endpoints with /api
+@RequestMapping("/api")
 public class StressTestController {
 
     private static final Logger logger = LoggerFactory.getLogger(StressTestController.class);
 
-    // Max out CPU with multi-threading for 20 seconds and then return a response
+    // Simulate 500 Internal Server Error
+    @GetMapping("/simulate-500")
+    @XRayEnabled
+    public ResponseEntity<String> simulate500Error() {
+        logger.info("Simulating 500 Internal Server Error...");
+        return ResponseEntity.status(500).body("Simulated 500 Internal Server Error");
+    }
+
+    // Simulate 504 Gateway Timeout
+    @GetMapping("/simulate-504")
+    @XRayEnabled
+    public ResponseEntity<String> simulate504Error() throws InterruptedException {
+        logger.info("Simulating 504 Gateway Timeout...");
+
+        // Simulate delay to mimic timeout
+        Thread.sleep(5000);
+
+        return ResponseEntity.status(504).body("Simulated 504 Gateway Timeout");
+    }
+
+    // Simulate 502 Bad Gateway Error
+    @GetMapping("/simulate-502")
+    @XRayEnabled
+    public ResponseEntity<String> simulate502Error() {
+        logger.info("Simulating 502 Bad Gateway...");
+        return ResponseEntity.status(502).body("Simulated 502 Bad Gateway Error");
+    }
+
+    // Max out CPU with multi-threading for 20 seconds and return a response
     @GetMapping("/cpu-crash")
     @XRayEnabled
     public ResponseEntity<String> cpuCrashTest() throws InterruptedException {
@@ -45,10 +73,10 @@ public class StressTestController {
         scheduler.shutdown();
         logger.info("CPU spike finished.");
 
-        return ResponseEntity.ok("CPU spike completed!");  // Return a JSON response
+        return ResponseEntity.ok("CPU spike completed!");  // Return a success response
     }
 
-    // Max out heap memory for 10 seconds or until OutOfMemoryError and then return a response
+    // Max out heap memory for 10 seconds or until OutOfMemoryError and return a response
     @GetMapping("/memory-crash")
     @XRayEnabled
     public ResponseEntity<String> memoryCrashTest() {
@@ -62,7 +90,7 @@ public class StressTestController {
             }
         } catch (OutOfMemoryError e) {
             logger.error("OutOfMemoryError caught: {}", e.getMessage());
-            return ResponseEntity.ok("OutOfMemoryError: Memory crash test completed!");  // Return error response
+            return ResponseEntity.status(500).body("OutOfMemoryError: Memory crash test completed!");  // Simulate error response
         }
 
         logger.info("Memory crash test completed.");
